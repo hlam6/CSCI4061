@@ -91,7 +91,7 @@ int main(int argc, char *argv[]) {
 
     processArgs(argc, argv);  
     initialize_shared_mem(); 
-
+    char test[100] = "Testing my git";
     for (int i = 0; i < numProcesses && (childpid = fork()); i++); 
     
     if (childpid == -1) {
