@@ -117,6 +117,7 @@ void addString(String string, StringArray *stringArr) {
         stringArr->arr[stringArr->len] = string;
         stringArr->len++; 
     }
+    printf(
 } 
 
      

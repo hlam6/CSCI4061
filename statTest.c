@@ -12,12 +12,14 @@ typedef enum {
 int numFilesInDir(char *path); 
 char ** newStringArray(int length); 
 void deallocateStringArray(char **stringArray, int length); 
+char * stringCopy(char *source); 
+char ** allFilesInDir(char *path);
 
 int main(int argc, char *argv[]) {
     int numFiles = numFilesInDir("./"); 
     char **files = newStringArray(numFiles); 
     printf("Number of files in directory: %d\n", numFiles); 
-
+    
     deallocateStringArray(files, numFiles); 
 
    /* 
@@ -60,3 +62,16 @@ void deallocateStringArray(char **stringArray, int length) {
     free(stringArray); 
 } 
 
+
+char * stringCopy(char *source) { 
+    char *strCopy = calloc(strlen(source) + 1, sizeor(char));
+    strcpy(strCopy, source); 
+    return strCopy; 
+} 
+
+/* 
+char ** allFilesInDir(char *path) { 
+    DIR *dirStream;
+    struct dirent *entry; 
+    int numFiles = numFilesInDir(path); 
+    char **files = newStringArray(numFiles) */
