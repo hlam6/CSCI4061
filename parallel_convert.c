@@ -46,7 +46,7 @@ typedef enum {InvalidArguments,
               CannotDeleteFile
              } ProgramError; 
 
-typedef enum {GIF = 0, PNG = 1, BMP = 2, NONE} ImageType; 
+typedef enum {GIF = 0, PNG = 1, BMP = 2, NONE = 4} ImageType; 
 typedef struct { 
     char files[MAX_FILES][BUF_SIZE]; 
     int num_files; 
@@ -83,22 +83,37 @@ void delete_junk_file(char *filename);
 void convert_image(char *filename);
 void create_pathname(char *pathname, char *filename, char *directory); 
 char * get_extension(char *filename); 
+bool have_all_types(pid_t childpid); 
+
+bool have_all_types(pid_t childpid) { 
+    static int have[4]; 
+    have[determineImageType(childpid)] = 1; 
+    return have[0] && have[1] && have[2] && have[3]; 
+} 
+
 
 
 //_ Main Function ______________________________________________________________
 int main(int argc, char *argv[]) {
     pid_t childpid;
+    int have_type[4]; 
 
     processArgs(argc, argv);  
     initialize_shared_mem(); 
 
-    for (int i = 0; i < numProcesses && (childpid = fork()); i++); 
+    for (int i = 0; i < numProcesses && (childpid = fork()); i++) { 
+        if (numProcesses > 3 && !have_all_types(childpid) && i == 
+            have_type[determineImageType(childpid)] = 1;
+            if (i == numProcess - 1 && have_type[0] + have_type[1] + have_type[2] + have_type[3] == 4)   
+
+        }  
+    }
     
     if (childpid == -1) {
         error_handler(ForkFailed); 
     }
     else if (childpid == 0) {
-        determineFileType(); 
+        file_type = determineImageType(getpid()); 
         initialize_input_dir(); 
 
         // Test output
@@ -285,6 +300,12 @@ void convert_image(char *filename) {
   char input_path[BUF_SIZE*2]; 
   char output_path[BUF_SIZE*2];
   char output_path = newFileName(filename);
+  create_pathname(input_path, filename, directory); 
+  pid_t childpid; 
+  if (childpid = fork())
+      wait(NULL); 
+  else 
+      execv("convert input_path output_path"); 
   // fork 
   // if child, then execv(convert ...)
   // if parent, then wait(NULL) and return 
